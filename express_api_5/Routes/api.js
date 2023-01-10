@@ -26,5 +26,6 @@ router.get('/auth-token/profile', authTokenController.authTokenProfile)
 // rutas user
 router.get('/user/:guid', userController.userList)
 router.patch('/user/account/:guid', userController.userUpdate)
+
 export default router;
 

@@ -20,14 +20,14 @@ controller.authAuthenticated = async(req,res) => {
     }
 }
 
-controller.authAuthorizated = (req,res) => {
+controller.authAuthorizated = async(req,res) => {
     const { email, password } = req.body
 
     if (!email || !password) return res.sendStatus(400)
   
     try {
-      const user = checkEmailPassword(email, password)
-      if (user.role !== 'admin') return res.sendStatus(403)
+      const user = await checkEmailPassword(email, password)
+      if (user.role !== 'Admin') return res.sendStatus(403)
       return res.send(`Usuario ${user.name} es admin`)
     } catch (err) {
       return res.sendStatus(401)

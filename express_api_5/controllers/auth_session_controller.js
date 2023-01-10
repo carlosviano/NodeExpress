@@ -1,17 +1,17 @@
 import checkEmailPassword from "../helpers/check_email_password.js";
 import { nanoid } from 'nanoid';
-import { USERS_BBDD } from "../bbdd.js";
+import userModel from "../services/schemas/user_schema.js";
 
 const controller = {}
 const sessions = [];
 
-controller.authSessionLogin = (req,res) => {
+controller.authSessionLogin = async(req,res) => {
     const {email,password} = req.body;
 
     if(!email || !password) return res.sendStatus(400);
 
     try{
-        const {guid} = checkEmailPassword(email, password);
+        const {guid} = await checkEmailPassword(email, password);
         const sessionId = nanoid();
         sessions.push({sessionId,guid})
         console.log(sessions)
@@ -22,7 +22,7 @@ controller.authSessionLogin = (req,res) => {
     }
 }
 
-controller.authSessionProfile = (req,res) => {
+controller.authSessionProfile = async(req,res) => {
     const {cookies} = req;
     console.log(cookies.sessionId)
     if(!cookies.sessionId) return res.sendStatus(401);
@@ -32,7 +32,7 @@ controller.authSessionProfile = (req,res) => {
 
     if(!userSession) return res.sendStatus(401);
 
-    const user = USERS_BBDD.find((user) => user.guid === userSession.guid);
+    const user = await userModel.findById(guid);
     if(!user) return res.sendStatus(401);
 
     delete user.password;

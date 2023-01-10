@@ -1,6 +1,6 @@
 import { SignJWT } from "jose";
-import { USERS_BBDD } from "../bbdd.js";
 import checkEmailPassword from "../helpers/check_email_password.js";
+import userModel from "../services/schemas/user_schema.js";
 
 const controller = {};
 
@@ -10,7 +10,7 @@ controller.authTokenLogin = async(req,res) => {
     if(!email || !password) return res.sendStatus(400);
 
     try{
-        const {guid} = checkEmailPassword(email,password);
+        const {guid} = await checkEmailPassword(email,password);
         const jwtConstructor = new SignJWT({guid})
         const encoder = new TextEncoder();
         const jwt = await jwtConstructor
@@ -36,7 +36,7 @@ try{
     const encoder = new TextEncoder();
     const {payload} = await jwtVerify(authorization, encoder.encode(process.env.JWT_SECRET));
     console.log(payload);
-    const user = USERS_BBDD.find(user => user.guid === payload.guid);
+    const user = await userModel.findById(payload.guid)
     if(!user) return res.sendStatus(401);
     delete user.password;
     return res.send(user);
