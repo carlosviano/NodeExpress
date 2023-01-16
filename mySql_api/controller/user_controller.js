@@ -90,4 +90,18 @@ controller.deleteUser = async (req, res) => {
   }
 };
 
+controller.updateUser = async(req,res) => {
+  const {authorization} = req.headers;
+
+  if(!authorization) return res.sendStatus(401);
+
+  try{
+    if(Object.entries(req.body).length === 0) return res.sendStatus(400).send("Error al recibir el body");
+    await dao.updateUser(req.params.id, req.body)
+    return res.send(`Usuario con id ${req.params.id} modificado`)
+  } catch (e){
+    console.log(e.message)
+  }
+}
+
 export default controller;

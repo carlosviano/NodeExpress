@@ -14,4 +14,7 @@ dao.getUserById = async (id) => await userQueries.getUserById(id)
 //Eliminar user por Id
 dao.deleteUser = async (id) => await userQueries.deleteUser(id)
 
+//Actualizar user por Id
+dao.updateUser = async (id, userData) => await userQueries.updateUser(id, userData)
+
 export default dao;
