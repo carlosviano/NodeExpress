@@ -4,6 +4,7 @@ import logger from 'morgan'
 import cookieParser from "cookie-parser"
 import db from './services/mysql.js'
 import userRouter from './routes/user_router.js'
+import productRouter from './routes/products_router.js'
 
 dotenv.config()
 
@@ -14,7 +15,11 @@ app.use(express.json())
 app.use(express.text())
 app.use(logger('dev'))
 app.use(cookieParser());
+
+
+
 app.use("/user",userRouter)
+app.use("/products",productRouter)
 
 await db.createConnection();
 
