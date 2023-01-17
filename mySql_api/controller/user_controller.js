@@ -5,9 +5,9 @@ import dao from "../services/dao.js";
 const controller = {};
 
 controller.addUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const {email, password } = req.body;
 
-  if (!name || !email || !password)
+  if (!email || !password)
     return res.status(400).send("Error al recibir el body");
 
   try {
@@ -17,7 +17,7 @@ controller.addUser = async (req, res) => {
 
     const addUser = await dao.addUser(req.body);
     if (addUser)
-      return res.send(`Usuario ${name} con id: ${addUser} registrado`);
+      return res.send(`Usuario ${email} con id: ${addUser} registrado`);
   } catch (e) {
     console.log(e.message);
   }

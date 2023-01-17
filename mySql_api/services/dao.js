@@ -1,4 +1,5 @@
 import userQueries from "./mysql_queries/user_queries.js";
+import productQueries from "./mysql_queries/product_queries.js";
 
 const dao = {};
 
@@ -16,5 +17,11 @@ dao.deleteUser = async (id) => await userQueries.deleteUser(id)
 
 //Actualizar user por Id
 dao.updateUser = async (id, userData) => await userQueries.updateUser(id, userData)
+
+//Añadir imagen a la bbdd
+dao.addImage = async (image) => await productQueries.addImage(image)
+
+//Obtener imagen por id
+dao.getImageById = async (id) => await productQueries.getImageById(id)
 
 export default dao;
