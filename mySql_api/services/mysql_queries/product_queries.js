@@ -9,9 +9,10 @@ productQueries.addImage = async (imageData) => {
         conn = await db.createConnection();
 
         let imageObj = {
-            producto: imageData.name,
+            name: imageData.name,
             path: imageData.path,
             reg_date: moment().format('YYYY-MM-DD HH:mm:ss'),
+            producto: imageData.producto
         }
         return await db.query('INSERT INTO imagen SET ? ', imageObj,'insert', conn);
     } catch (e){
@@ -32,6 +33,39 @@ productQueries.getImageById = async (id) => {
     } finally {
         conn && (await conn.end());
     }
+}
+
+productQueries.getProductByRef = async (ref) => {
+    let conn = null;
+    console.log(ref);
+    try {
+        conn = await db.createConnection();
+        return await db.query('SELECT * FROM producto where referencia = ?', ref,"select",conn)
+    } catch (e){
+        throw new Error(e);
+    } finally {
+        conn && (await conn.end());
+    }
+}
+
+productQueries.addProduct = async (productData) => { 
+    let conn = null;
+
+    try{ 
+        conn = await db.createConnection();
+
+        let productObj = {
+            nombre: productData.nombre, 
+            precio: productData.precio, 
+            referencia: productData.referencia
+        }
+        return await db.query('INSERT INTO producto SET ? ',productObj,'insert',conn);
+    } catch(e){
+        throw new Error(e)
+    } finally {
+        conn && (await conn.end())
+    }
+    
 }
 
 export default productQueries;

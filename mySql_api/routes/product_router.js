@@ -7,4 +7,6 @@ productRouter.post("/upload",productController.uploadImage);
 
 productRouter.get("/image/:id", productController.getImage);
 
+productRouter.post("/add_product", productController.addProduct)
+
 export default productRouter;

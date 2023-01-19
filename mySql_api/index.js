@@ -41,7 +41,7 @@ app.use(
 
 
 app.use("/user",userRouter)
-app.use("/products",productRouter)
+app.use("/product",productRouter)
 
 await db.createConnection();
 
