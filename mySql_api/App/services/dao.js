@@ -30,4 +30,7 @@ dao.getProductByRef = async(referencia) => await productQueries.getProductByRef(
 //Añadir un producto a bbdd
 dao.addProduct = async (productData) => await productQueries.addProduct(productData)
 
+//Traer todos los productos de la bbdd
+dao.getAllProducts = async(nulo) => await productQueries.getAllProducts(nulo)
+
 export default dao;

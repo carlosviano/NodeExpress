@@ -57,7 +57,8 @@ productQueries.addProduct = async (productData) => {
         let productObj = {
             nombre: productData.nombre, 
             precio: productData.precio, 
-            referencia: productData.referencia
+            referencia: productData.referencia,
+            talla: productData.talla,
         }
         return await db.query('INSERT INTO producto SET ? ',productObj,'insert',conn);
     } catch(e){
@@ -66,6 +67,18 @@ productQueries.addProduct = async (productData) => {
         conn && (await conn.end())
     }
     
+}
+
+productQueries.getAllProducts = async (nulo) => {
+    let conn = null;
+    try {
+        conn = await db.createConnection();
+        return await db.query('SELECT * FROM producto WHERE nombre != ? ',nulo,"select",conn)
+    } catch (e){
+        throw new Error(e);
+    } finally {
+        conn && (await conn.end())
+    }
 }
 
 export default productQueries;

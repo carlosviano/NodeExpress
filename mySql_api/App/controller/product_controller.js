@@ -69,5 +69,17 @@ controller.addProduct = async(req,res) => {
   }
 }
 
+controller.getAllProducts = async(req,res) => {
+  const {nulo} = req.body
+  try{ 
+    const products = await dao.getAllProducts(nulo)
+
+    if(products.length > 0){
+      return res.send(`Los productos encontrados son ${products}`)
+    }
+  } catch(e){
+    console.log(e.message)
+  }
+}
 
 export default controller;
