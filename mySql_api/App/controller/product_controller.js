@@ -73,9 +73,10 @@ controller.getAllProducts = async(req,res) => {
   const {nulo} = req.body
   try{ 
     const products = await dao.getAllProducts(nulo)
+    console.log(products)
 
-    if(products.length > 0){
-      return res.send(`Los productos encontrados son ${products}`)
+    if(products){
+      return res.send(products)
     }
   } catch(e){
     console.log(e.message)

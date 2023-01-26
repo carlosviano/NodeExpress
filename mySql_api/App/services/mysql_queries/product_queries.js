@@ -73,7 +73,7 @@ productQueries.getAllProducts = async (nulo) => {
     let conn = null;
     try {
         conn = await db.createConnection();
-        return await db.query('SELECT * FROM producto WHERE nombre != ? ',nulo,"select",conn)
+        return await db.query('SELECT * FROM producto JOIN imagen on producto.id = imagen.producto ',[],"select",conn)
     } catch (e){
         throw new Error(e);
     } finally {
