@@ -13,8 +13,8 @@ controller.uploadImage = async (req, res) => {
       return res.status(400).send("No se ha cargado ningun archivo");
     }
 
-    if(!req.query){
-      return res.status(400).send("No se ha indicado el id del producto")
+    if (!req.query) {
+      return res.status(400).send("No se ha indicado el id del producto");
     }
 
     const images = !req.files.imagen.length
@@ -25,7 +25,11 @@ controller.uploadImage = async (req, res) => {
       image.mv(uploadPath, (err) => {
         if (err) return res.status(500).send(err);
       });
-      await dao.addImage({name: image.name, path: uploadPath, producto: req.query.productId})
+      await dao.addImage({
+        name: image.name,
+        path: uploadPath,
+        producto: req.query.productId,
+      });
     });
     return res.send("Imagen subida");
   } catch (e) {
@@ -34,53 +38,54 @@ controller.uploadImage = async (req, res) => {
   }
 };
 
-controller.getImage = async(req,res) => {
-  try { 
+controller.getImage = async (req, res) => {
+  try {
     console.log(req.params.id);
     const image = await dao.getImageById(req.params.id);
-   
-    if(image.length <= 0) return res.status(404).send("La imagen no existe");
 
-    return res.send({path: image[0].path})
-  } catch(e){
-    console.log(e.message)
-    return res.status(400).send(e.message)
+    if (image.length <= 0) return res.status(404).send("La imagen no existe");
+
+    return res.send({ path: image[0].path });
+  } catch (e) {
+    console.log(e.message);
+    return res.status(400).send(e.message);
   }
-}
+};
 
-controller.addProduct = async(req,res) => {
-  const {nombre,precio,referencia} = req.body
+controller.addProduct = async (req, res) => {
+  const { nombre, precio, referencia } = req.body;
 
-  if(!nombre || !precio || !referencia){
-    return res.status(400).send("Error al recibir el body")
+  if (!nombre || !precio || !referencia) {
+    return res.status(400).send("Error al recibir el body");
   }
-  try{    
-    const product = await dao.getProductByRef(referencia)
+  try {
+    const product = await dao.getProductByRef(referencia);
 
-    if(product.length > 0) return res.status(409).send("producto ya registrado")
+    if (product.length > 0)
+      return res.status(409).send("producto ya registrado");
 
-    const addProduct = await dao.addProduct(req.body)
+    const addProduct = await dao.addProduct(req.body);
 
-    if(addProduct){
-      return res.send(`Producto ${nombre} con id ${addProduct} registrado`)
+    if (addProduct) {
+      return res.send(`Producto ${nombre} con id ${addProduct} registrado`);
     }
-  } catch(e){
-    console.log(e.message)
+  } catch (e) {
+    console.log(e.message);
   }
-}
+};
 
-controller.getAllProducts = async(req,res) => {
-  const {nulo} = req.body
-  try{ 
-    const products = await dao.getAllProducts(nulo)
-    console.log(products)
+controller.getAllProducts = async (req, res) => {
+  const { nulo } = req.body;
+  try {
+    const products = await dao.getAllProducts(nulo);
+    console.log(products);
 
-    if(products){
-      return res.send(products)
+    if (products) {
+      return res.send(products);
     }
-  } catch(e){
-    console.log(e.message)
+  } catch (e) {
+    console.log(e.message);
   }
-}
+};
 
 export default controller;
