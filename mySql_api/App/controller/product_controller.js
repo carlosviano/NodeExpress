@@ -22,12 +22,13 @@ controller.uploadImage = async (req, res) => {
       : req.files.imagen;
     images.forEach(async (image) => {
       let uploadPath = __dirname + "/public/images/products/" + image.name;
+      let BBDDPath = "images/products/" + image.name;
       image.mv(uploadPath, (err) => {
         if (err) return res.status(500).send(err);
       });
       await dao.addImage({
         name: image.name,
-        path: uploadPath,
+        path: BBDDPath,
         producto: req.query.productId,
       });
     });

@@ -8,7 +8,7 @@ import productRouter from "./routes/product_router.js";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import { fileURLToPath } from "url";
-import { dirname, resolve } from "path";
+import { dirname, join } from "path";
 
 dotenv.config();
 
@@ -18,6 +18,8 @@ export function currentDir() {
   return { __dirname, __filename };
 }
 
+const { __dirname } = currentDir();
+
 const app = express();
 
 // middlware express
@@ -26,6 +28,7 @@ app.use(express.text());
 app.use(logger("dev"));
 app.use(cookieParser());
 app.use(cors());
+app.use(express.static(join(__dirname, "public")));
 
 app.use(
   fileUpload({
