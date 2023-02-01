@@ -76,14 +76,53 @@ controller.addProduct = async (req, res) => {
 };
 
 controller.getAllProducts = async (req, res) => {
-  const { nulo } = req.body;
   try {
-    const products = await dao.getAllProducts(nulo);
+    const products = await dao.getAllProducts();
     console.log(products);
 
-    if (products) {
-      return res.send(products);
-    }
+    return res.send(products);
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+
+controller.getProductByReferencia = async (req, res) => {
+  try {
+    console.log(req.params.ref);
+    const product = await dao.getProductByRef(req.params.ref);
+    return res.status(200).send(product);
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+
+controller.addUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password)
+    return res.status(400).send("Error al recibir el body");
+
+  try {
+    const user = await dao.getUserByEmail(email);
+
+    if (user.length > 0) return res.status(409).send("usuario ya registrado");
+
+    const addUser = await dao.addUser(req.body);
+    if (addUser)
+      return res.send(`Usuario ${email} con id: ${addUser} registrado`);
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+
+controller.addToCart = async (req, res) => {
+  const { id, producto, cantidad, precio } = req.body;
+
+  if (!id || !producto || !cantidad || !precio)
+    return res.status(400).send("Error al recibir el body");
+
+  try {
+    const producto = await dao.getProductByRef(ref);
   } catch (e) {
     console.log(e.message);
   }

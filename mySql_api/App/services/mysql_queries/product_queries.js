@@ -51,7 +51,7 @@ productQueries.getProductByRef = async (ref) => {
   try {
     conn = await db.createConnection();
     return await db.query(
-      "SELECT * FROM producto where referencia = ?",
+      "SELECT producto.id,producto.precio, producto.referencia, producto.nombre, producto.talla, JSON_ARRAYAGG(imagen.path) as imagenes FROM producto JOIN imagen on producto.id = imagen.producto WHERE referencia = ? group by producto.id",
       ref,
       "select",
       conn
@@ -93,7 +93,7 @@ productQueries.getAllProducts = async () => {
   try {
     conn = await db.createConnection();
     return await db.query(
-      "SELECT producto.id,producto.precio, producto.nombre, producto.talla, JSON_ARRAYAGG(imagen.path) as imagenes FROM producto JOIN imagen on producto.id = imagen.producto group by producto.id",
+      "SELECT producto.id,producto.precio, producto.referencia, producto.nombre, producto.talla, JSON_ARRAYAGG(imagen.path) as imagenes FROM producto JOIN imagen on producto.id = imagen.producto group by producto.id",
       [],
       "select",
       conn
